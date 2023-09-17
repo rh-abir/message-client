@@ -1,18 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
-import App from "./App.jsx";
+import { ToastContainer } from "react-toastify";
 import "./main.scss";
+import AuthPorvider from "./provider/AuthPorvider.jsx";
 import router from "./routes/router.jsx";
-import store from "./store/index.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </RouterProvider>
+    <AuthPorvider>
+      <ToastContainer position="top-center" autoClose={2000} />
+      <RouterProvider router={router} />
+    </AuthPorvider>
   </React.StrictMode>
 );
