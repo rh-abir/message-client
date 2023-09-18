@@ -1,6 +1,30 @@
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../provider/AuthPorvider";
 
 const Login = () => {
+  const { signIn } = useContext(AuthContext);
+
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    console.log(email, password);
+
+    signIn(email, password)
+      .then((res) => {
+        console.log(res);
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
   return (
     <div className="login">
       <div className="card">
@@ -9,7 +33,7 @@ const Login = () => {
         </div>
 
         <div className="card-body">
-          <form action="">
+          <form onSubmit={handleLogin}>
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
@@ -17,6 +41,7 @@ const Login = () => {
                 id="email"
                 className="form-control"
                 placeholder="Email"
+                required
               />
             </div>
 
@@ -27,6 +52,7 @@ const Login = () => {
                 id="password"
                 className="form-control"
                 placeholder="password"
+                required
               />
             </div>
 
