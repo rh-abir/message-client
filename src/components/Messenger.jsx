@@ -1,6 +1,7 @@
 import { BiSearch } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
+import ActiveFriend from "./ActiveFriend";
 
 const Messenger = () => {
   console.log("hello");
@@ -44,6 +45,10 @@ const Messenger = () => {
                   placeholder="search"
                 />
               </div>
+            </div>
+
+            <div className="active-friends">
+              <ActiveFriend />
             </div>
           </div>
         </div>
