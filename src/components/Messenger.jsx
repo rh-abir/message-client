@@ -3,6 +3,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
 import ActiveFriend from "./ActiveFriend";
 import Friends from "./Friends";
+import RightSide from "./RightSide";
 
 const Messenger = () => {
   console.log("hello");
@@ -86,6 +87,8 @@ const Messenger = () => {
             </div>
           </div>
         </div>
+
+        <RightSide />
       </div>
     </div>
   );
