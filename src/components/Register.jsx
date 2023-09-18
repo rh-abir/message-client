@@ -1,12 +1,17 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+import { saveUser } from "../api/auth";
 import { AuthContext } from "../provider/AuthPorvider";
 
+import { useAlert } from "react-alert";
+
 const Register = () => {
-  const { createUser, user, signIn, updateUSerProfile } =
-    useContext(AuthContext);
-  console.log(user);
+  const alert = useAlert();
+
+  const navigate = useNavigate();
+
+  const { createUser, updateUSerProfile } = useContext(AuthContext);
+  // console.log(user);
 
   const [state, setState] = useState({
     userName: "",
@@ -67,7 +72,9 @@ const Register = () => {
             console.log(result.user);
             updateUSerProfile(userName, imageUrl)
               .then(() => {
-                toast.success("Register successfully");
+                saveUser(result.user);
+                alert.success("Success");
+                navigate("/");
               })
               .catch((error) => {
                 console.log(error);
