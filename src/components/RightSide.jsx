@@ -1,6 +1,7 @@
 import { BiSolidPhoneCall, BiSolidVideo } from "react-icons/bi";
 import { HiDotsCircleHorizontal } from "react-icons/hi";
 import Message from "./Message";
+import MessageSend from "./MessageSend";
 
 const RightSide = () => {
   return (
@@ -39,6 +40,8 @@ const RightSide = () => {
               </div>
 
               <Message />
+
+              <MessageSend />
             </div>
           </div>
 
