@@ -1,18 +1,18 @@
 import { BsChevronDown } from "react-icons/bs";
 
-const FriendInfo = () => {
+const FriendInfo = ({ currentFriend }) => {
   return (
     <div className="friend-info">
       <input type="checkbox" id="gallery" />
       <div className="image-name">
         <div className="image">
-          <img src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg" alt="" />
+          <img src={currentFriend?.image} alt="" />
         </div>
 
         <div className="active-user">Active</div>
 
         <div className="name">
-          <h4>Rakibul hasan</h4>
+          <h4>{currentFriend?.name}</h4>
         </div>
       </div>
 

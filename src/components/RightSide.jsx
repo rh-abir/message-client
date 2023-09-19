@@ -4,7 +4,7 @@ import FriendInfo from "./FriendInfo";
 import Message from "./Message";
 import MessageSend from "./MessageSend";
 
-const RightSide = () => {
+const RightSide = ({ currentFriend, inputHandle, newMessage, sendMessage }) => {
   return (
     <div className="col-9">
       <div className="right-side">
@@ -15,14 +15,11 @@ const RightSide = () => {
               <div className="header">
                 <div className="image-name">
                   <div className="image">
-                    <img
-                      src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg"
-                      alt=""
-                    />
+                    <img src={currentFriend?.image} alt="" />
                     <div className="active-icon"></div>
                   </div>
                   <div className="name">
-                    <h3>Rakibul hasan</h3>
+                    <h3>{currentFriend?.name}</h3>
                   </div>
                 </div>
 
@@ -44,12 +41,16 @@ const RightSide = () => {
               </div>
 
               <Message />
-              <MessageSend />
+              <MessageSend
+                inputHandle={inputHandle}
+                newMessage={newMessage}
+                sendMessage={sendMessage}
+              />
             </div>
           </div>
 
           <div className="col-4">
-            <FriendInfo />
+            <FriendInfo currentFriend={currentFriend} />
           </div>
         </div>
       </div>

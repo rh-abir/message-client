@@ -3,7 +3,7 @@ import { BiMessageAltEdit } from "react-icons/bi";
 import { BsPlusCircle } from "react-icons/bs";
 import { RiGalleryLine } from "react-icons/ri";
 
-const MessageSend = () => {
+const MessageSend = ({ inputHandle, newMessage, sendMessage }) => {
   const emojis = [
     "😊",
     "✌",
@@ -52,6 +52,8 @@ const MessageSend = () => {
 
       <div className="message-type">
         <input
+          onChange={inputHandle}
+          value={newMessage}
           type="text"
           className="form-control"
           name="message"
@@ -61,7 +63,9 @@ const MessageSend = () => {
         <label htmlFor="emoji">😊</label>
       </div>
 
-      <div className="file">❤️</div>
+      <div onClick={sendMessage} className="file">
+        ❤️
+      </div>
 
       <div className="emoji-section">
         <div className="emoji">

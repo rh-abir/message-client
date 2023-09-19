@@ -10,13 +10,34 @@ import RightSide from "./RightSide";
 
 const Messenger = () => {
   const { user } = useContext(AuthContext);
-  console.log(user);
 
   const [friends, setFriends] = useState([]);
 
+  const [currentFriend, setCurrentFriend] = useState("");
+
+  const [newMessage, setNewMessage] = useState("");
+
+  const inputHandle = (e) => {
+    setNewMessage(e.target.value);
+  };
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+
+    console.log(newMessage);
+  };
+
   useEffect(() => {
-    getFriends(user.email).then((data) => setFriends(data));
+    getFriends(user?.email).then((data) => setFriends(data));
   }, [user]);
+
+  useEffect(() => {
+    if (friends && friends.length > 0) {
+      setCurrentFriend(friends[0]);
+    }
+  }, [friends]);
+
+  console.log(user);
 
   return (
     <div className="messenger">
@@ -26,10 +47,10 @@ const Messenger = () => {
             <div className="top">
               <div className="image-name">
                 <div className="image">
-                  <img src={user.photoURL} alt="" />
+                  <img src={user?.photoURL} alt="" />
                 </div>
                 <div className="name">
-                  <h3>{user.displayName}</h3>
+                  <h3>{user?.displayName}</h3>
                 </div>
               </div>
 
@@ -63,7 +84,11 @@ const Messenger = () => {
             <div className="friends">
               {friends && friends.length > 0
                 ? friends.map((fd, indx) => (
-                    <div key={indx} className="hover-friend">
+                    <div
+                      key={indx}
+                      onClick={() => setCurrentFriend(fd)}
+                      className="hover-friend"
+                    >
                       <Friends friend={fd} />
                     </div>
                   ))
@@ -71,8 +96,16 @@ const Messenger = () => {
             </div>
           </div>
         </div>
-
-        <RightSide />
+        {currentFriend ? (
+          <RightSide
+            currentFriend={currentFriend}
+            inputHandle={inputHandle}
+            newMessage={newMessage}
+            sendMessage={sendMessage}
+          />
+        ) : (
+          "Please selecet your friend"
+        )}
       </div>
     </div>
   );
