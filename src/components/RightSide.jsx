@@ -1,5 +1,6 @@
 import { BiSolidPhoneCall, BiSolidVideo } from "react-icons/bi";
 import { HiDotsCircleHorizontal } from "react-icons/hi";
+import FriendInfo from "./FriendInfo";
 import Message from "./Message";
 import MessageSend from "./MessageSend";
 
@@ -7,6 +8,7 @@ const RightSide = () => {
   return (
     <div className="col-9">
       <div className="right-side">
+        <input type="checkbox" id="dot" />
         <div className="row">
           <div className="col-8">
             <div className="message-send-show">
@@ -34,19 +36,20 @@ const RightSide = () => {
                   </div>
 
                   <div className="icon">
-                    <HiDotsCircleHorizontal />
+                    <label htmlFor="dot">
+                      <HiDotsCircleHorizontal />
+                    </label>
                   </div>
                 </div>
               </div>
 
               <Message />
-
               <MessageSend />
             </div>
           </div>
 
           <div className="col-4">
-            <h1>Friend information section</h1>
+            <FriendInfo />
           </div>
         </div>
       </div>
