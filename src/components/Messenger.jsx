@@ -1,12 +1,22 @@
+import { useContext, useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
+import { getFriends } from "../api/auth";
+import { AuthContext } from "../provider/AuthPorvider";
 import ActiveFriend from "./ActiveFriend";
 import Friends from "./Friends";
 import RightSide from "./RightSide";
 
 const Messenger = () => {
-  console.log("hello");
+  const { user } = useContext(AuthContext);
+  console.log(user);
+
+  const [friends, setFriends] = useState([]);
+
+  useEffect(() => {
+    getFriends(user.email).then((data) => setFriends(data));
+  }, [user]);
 
   return (
     <div className="messenger">
@@ -16,13 +26,10 @@ const Messenger = () => {
             <div className="top">
               <div className="image-name">
                 <div className="image">
-                  <img
-                    src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg"
-                    alt=""
-                  />
+                  <img src={user.photoURL} alt="" />
                 </div>
                 <div className="name">
-                  <h3>Rakib</h3>
+                  <h3>{user.displayName}</h3>
                 </div>
               </div>
 
@@ -54,36 +61,13 @@ const Messenger = () => {
             </div>
 
             <div className="friends">
-              <div className="hover-friend active">
-                <Friends />
-              </div>
-              <div className="hover-friend">
-                <Friends />
-              </div>
-              <div className="hover-friend">
-                <Friends />
-              </div>
-              <div className="hover-friend">
-                <Friends />
-              </div>
-              <div className="hover-friend">
-                <Friends />
-              </div>
-              <div className="hover-friend">
-                <Friends />
-              </div>
-              <div className="hover-friend">
-                <Friends />
-              </div>
-              <div className="hover-friend">
-                <Friends />
-              </div>
-              <div className="hover-friend">
-                <Friends />
-              </div>
-              <div className="hover-friend">
-                <Friends />
-              </div>
+              {friends && friends.length > 0
+                ? friends.map((fd, indx) => (
+                    <div key={indx} className="hover-friend">
+                      <Friends friend={fd} />
+                    </div>
+                  ))
+                : "No Friends"}
             </div>
           </div>
         </div>

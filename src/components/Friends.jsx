@@ -1,13 +1,13 @@
-const Friends = () => {
+const Friends = ({ friend }) => {
   return (
     <div className="friend">
       <div className="friend-image">
         <div className="image">
-          <img src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg" alt="" />
+          <img src={friend.image} alt="" />
         </div>
       </div>
       <div className="friend-name">
-        <h4>Rakibul hasan</h4>
+        <h4>{friend.name}</h4>
       </div>
     </div>
   );

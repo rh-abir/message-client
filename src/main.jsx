@@ -9,6 +9,11 @@ import { Provider as AlertProvider, positions, transitions } from "react-alert";
 
 import alertTemplate from "react-alert-template-basic";
 
+import { QueryClient, QueryClientProvider } from "react-query";
+
+// Create a client
+const queryClient = new QueryClient();
+
 const options = {
   timeout: 3000,
   positions: positions.TOP_CENTER,
@@ -19,7 +24,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthPorvider>
       <AlertProvider template={alertTemplate} {...options}>
-        <RouterProvider router={router} />
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
       </AlertProvider>
     </AuthPorvider>
   </React.StrictMode>
