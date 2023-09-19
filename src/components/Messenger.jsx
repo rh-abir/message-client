@@ -3,6 +3,7 @@ import { BiSearch } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
 import { getFriends } from "../api/auth";
+import { messageSend } from "../api/messageAction";
 import { AuthContext } from "../provider/AuthPorvider";
 import ActiveFriend from "./ActiveFriend";
 import Friends from "./Friends";
@@ -24,7 +25,18 @@ const Messenger = () => {
   const sendMessage = (e) => {
     e.preventDefault();
 
-    console.log(newMessage);
+    const data = {
+      senderName: user?.displayName,
+      senderEmail: user.email,
+      reseverEmail: currentFriend.email,
+
+      message: {
+        text: newMessage ? newMessage : "❤️",
+        image: "",
+      },
+    };
+
+    messageSend(data);
   };
 
   useEffect(() => {
@@ -37,7 +49,7 @@ const Messenger = () => {
     }
   }, [friends]);
 
-  console.log(user);
+  // console.log(currentFriend);
 
   return (
     <div className="messenger">
@@ -87,7 +99,11 @@ const Messenger = () => {
                     <div
                       key={indx}
                       onClick={() => setCurrentFriend(fd)}
-                      className="hover-friend"
+                      className={
+                        currentFriend._id === fd._id
+                          ? "hover-friend active"
+                          : "hover-friend"
+                      }
                     >
                       <Friends friend={fd} />
                     </div>
