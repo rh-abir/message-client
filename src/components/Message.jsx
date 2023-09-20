@@ -4,7 +4,7 @@ import { AuthContext } from "../provider/AuthPorvider";
 const Message = ({ message, currentFriend, scrollRef }) => {
   const { user } = useContext(AuthContext);
 
-  // console.log(currentFriend);
+  console.log(message.map((m) => console.log(m)));
 
   return (
     <div className="message-show">
@@ -15,7 +15,11 @@ const Message = ({ message, currentFriend, scrollRef }) => {
                 <div className="image-message">
                   <div className="my-text-">
                     <p className="message-text">
-                      {m.messageData?.message?.text}
+                      {m.messageData?.message?.text === "" ? (
+                        <img src={m.messageData?.message.image} />
+                      ) : (
+                        m.messageData?.message?.text
+                      )}
                     </p>
                   </div>
                 </div>
@@ -29,8 +33,11 @@ const Message = ({ message, currentFriend, scrollRef }) => {
                   <div className="message-time">
                     <div className="fd-text">
                       <p className="message-text">
-                        {" "}
-                        {m.messageData?.message?.text}{" "}
+                        {m.messageData?.message?.text === "" ? (
+                          <img src={m.messageData?.message.image} />
+                        ) : (
+                          m.messageData?.message?.text
+                        )}
                       </p>
                     </div>
 

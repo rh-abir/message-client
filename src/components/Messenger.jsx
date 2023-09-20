@@ -3,7 +3,11 @@ import { BiSearch } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
 import { getFriends } from "../api/auth";
-import { getMessage, messageSend } from "../api/messageAction";
+import {
+  ImageMessageSend,
+  getMessage,
+  messageSend,
+} from "../api/messageAction";
 import { AuthContext } from "../provider/AuthPorvider";
 import ActiveFriend from "./ActiveFriend";
 import Friends from "./Friends";
@@ -44,6 +48,48 @@ const Messenger = () => {
     messageSend(data).then((mess) => setMessage((prev) => [...prev, mess]));
   };
 
+  // get emuji and save new message
+  const emojiSend = (emu) => {
+    // console.log(emu);
+    setNewMessage((pre) => `${pre}` + emu);
+  };
+
+  const imageSend = (event) => {
+    if (event.target.files.length !== 0) {
+      const imageName = event.target?.files[0];
+
+      const formData = new FormData();
+      formData.append("image", imageName);
+
+      const url = `https://api.imgbb.com/1/upload?key=${"c60c31f11bc9fbfc3255c71c3908b8ee"}`;
+
+      fetch(url, {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then((imageData) => {
+          const imageUrl = imageData.data.display_url;
+          const datas = {
+            senderName: user?.displayName,
+            senderEmail: user.email,
+            reseverEmail: currentFriend.email,
+            message: {
+              text: "",
+              image: imageUrl,
+            },
+          };
+
+          ImageMessageSend(datas).then((mess) =>
+            setMessage((prev) => [...prev, mess])
+          );
+          // console.log(datas);
+        });
+
+      // console.log(imageName);
+    }
+  };
+
   // get all user without current user
   useEffect(() => {
     getFriends(user?.email).then((data) => setFriends(data));
@@ -76,6 +122,8 @@ const Messenger = () => {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
+
+  console.log(message);
 
   return (
     <div className="messenger">
@@ -146,6 +194,8 @@ const Messenger = () => {
             sendMessage={sendMessage}
             message={message}
             scrollRef={scrollRef}
+            emojiSend={emojiSend}
+            imageSend={imageSend}
           />
         ) : (
           "Please selecet your friend"

@@ -3,7 +3,13 @@ import { BiMessageAltEdit } from "react-icons/bi";
 import { BsPlusCircle } from "react-icons/bs";
 import { RiGalleryLine } from "react-icons/ri";
 
-const MessageSend = ({ inputHandle, newMessage, sendMessage }) => {
+const MessageSend = ({
+  inputHandle,
+  newMessage,
+  sendMessage,
+  emojiSend,
+  imageSend,
+}) => {
   const emojis = [
     "😊",
     "✌",
@@ -35,7 +41,12 @@ const MessageSend = ({ inputHandle, newMessage, sendMessage }) => {
 
       <div className="file hover-image">
         <div className="add-image">Add Image</div>
-        <input type="file" className="form-control" id="pic" />
+        <input
+          onChange={imageSend}
+          type="file"
+          className="form-control"
+          id="pic"
+        />
         <label htmlFor="pic">
           <RiGalleryLine />
         </label>
@@ -70,7 +81,9 @@ const MessageSend = ({ inputHandle, newMessage, sendMessage }) => {
       <div className="emoji-section">
         <div className="emoji">
           {emojis.map((emoji, ind) => (
-            <span key={ind}>{emoji}</span>
+            <span onClick={() => emojiSend(emoji)} key={ind}>
+              {emoji}
+            </span>
           ))}
         </div>
       </div>
