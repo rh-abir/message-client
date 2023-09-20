@@ -110,6 +110,8 @@ const Messenger = () => {
     });
 
     messageSend(data).then((mess) => setMessage((prev) => [...prev, mess]));
+
+    setNewMessage("");
   };
 
   // get emuji and save new message
