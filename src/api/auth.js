@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export const saveUser = (user) => {
   const currentuser = {
     name: user.displayName,
@@ -22,11 +23,15 @@ export const saveUser = (user) => {
     });
 };
 
-export const getFriends = async (email) => {
-  try {
-    const res = await axios.get(`http://localhost:5000/get-friends/${email}`);
-    return res?.data;
-  } catch (err) {
-    console.log(err);
-  }
+
+
+export const getFriends = async(email) => {
+    try{
+        const res = await axios.get(`http://localhost:5000/get-friends/${email}`)
+        // return res.data
+        // console.log(res)
+        return res?.data
+    }catch(err) {
+        console.log(err)
+    }
 };

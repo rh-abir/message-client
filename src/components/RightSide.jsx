@@ -4,7 +4,14 @@ import FriendInfo from "./FriendInfo";
 import Message from "./Message";
 import MessageSend from "./MessageSend";
 
-const RightSide = ({ currentFriend, inputHandle, newMessage, sendMessage }) => {
+const RightSide = ({
+  currentFriend,
+  inputHandle,
+  newMessage,
+  sendMessage,
+  message,
+  scrollRef,
+}) => {
   return (
     <div className="col-9">
       <div className="right-side">
@@ -40,7 +47,11 @@ const RightSide = ({ currentFriend, inputHandle, newMessage, sendMessage }) => {
                 </div>
               </div>
 
-              <Message />
+              <Message
+                message={message}
+                currentFriend={currentFriend}
+                scrollRef={scrollRef}
+              />
               <MessageSend
                 inputHandle={inputHandle}
                 newMessage={newMessage}

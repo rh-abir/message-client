@@ -19,6 +19,8 @@ const AuthPorvider = ({ children }) => {
 
   const [loading, setLoading] = useState(true);
 
+  const [message, setMessage] = useState([]);
+
   const createUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
@@ -58,6 +60,8 @@ const AuthPorvider = ({ children }) => {
     signIn,
     updateUSerProfile,
     logOut,
+    message,
+    setMessage,
   };
 
   return (

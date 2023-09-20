@@ -1,16 +1,18 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
 import { getFriends } from "../api/auth";
-import { messageSend } from "../api/messageAction";
+import { getMessage, messageSend } from "../api/messageAction";
 import { AuthContext } from "../provider/AuthPorvider";
 import ActiveFriend from "./ActiveFriend";
 import Friends from "./Friends";
 import RightSide from "./RightSide";
 
 const Messenger = () => {
-  const { user } = useContext(AuthContext);
+  const scrollRef = useRef();
+
+  const { user, message, setMessage } = useContext(AuthContext);
 
   const [friends, setFriends] = useState([]);
 
@@ -18,10 +20,13 @@ const Messenger = () => {
 
   const [newMessage, setNewMessage] = useState("");
 
+  // const [] = useState([]);
+
   const inputHandle = (e) => {
     setNewMessage(e.target.value);
   };
 
+  // send message and get send message merge previous message
   const sendMessage = (e) => {
     e.preventDefault();
 
@@ -36,20 +41,41 @@ const Messenger = () => {
       },
     };
 
-    messageSend(data);
+    messageSend(data).then((mess) => setMessage((prev) => [...prev, mess]));
   };
 
+  // get all user without current user
   useEffect(() => {
     getFriends(user?.email).then((data) => setFriends(data));
   }, [user]);
 
+  // set a default friend
   useEffect(() => {
     if (friends && friends.length > 0) {
       setCurrentFriend(friends[0]);
     }
   }, [friends]);
 
-  // console.log(currentFriend);
+  // get current user and friend message
+  useEffect(() => {
+    if (currentFriend && user) {
+      const email = {
+        myEmail: user.email,
+        fdEmail: currentFriend.email,
+      };
+
+      // setMessage([]);
+
+      getMessage(email).then((data) => {
+        setMessage(data);
+      });
+    }
+    // console.log(currentFriend.email);
+  }, [currentFriend, user, setMessage]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [message]);
 
   return (
     <div className="messenger">
@@ -118,6 +144,8 @@ const Messenger = () => {
             inputHandle={inputHandle}
             newMessage={newMessage}
             sendMessage={sendMessage}
+            message={message}
+            scrollRef={scrollRef}
           />
         ) : (
           "Please selecet your friend"
