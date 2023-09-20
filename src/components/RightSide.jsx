@@ -14,6 +14,7 @@ const RightSide = ({
   emojiSend,
   imageSend,
   activeUsers,
+  typingMessage,
 }) => {
   return (
     <div className="col-9">
@@ -62,6 +63,7 @@ const RightSide = ({
                 message={message}
                 currentFriend={currentFriend}
                 scrollRef={scrollRef}
+                typingMessage={typingMessage}
               />
               <MessageSend
                 inputHandle={inputHandle}

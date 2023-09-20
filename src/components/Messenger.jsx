@@ -31,6 +31,8 @@ const Messenger = () => {
 
   const [socketMessage, setSocketMessage] = useState("");
 
+  const [typingMessage, setTypingMessage] = useState("");
+
   const [newMessage, setNewMessage] = useState("");
 
   const [activeUsers, setActiveUser] = useState([]);
@@ -47,6 +49,11 @@ const Messenger = () => {
     socket.current.on("getMessage", (data) => {
       // console.log(data);
       setSocketMessage(data);
+    });
+
+    socket.current.on("typingMessageGet", (data) => {
+      // console.log(data);
+      setTypingMessage(data);
     });
   }, []);
 
@@ -81,6 +88,12 @@ const Messenger = () => {
 
   const inputHandle = (e) => {
     setNewMessage(e.target.value);
+
+    socket.current.emit("typingMessage", {
+      senderEmail: user.email,
+      reseverEmail: currentFriend.email,
+      msg: e.target.value,
+    });
   };
 
   // send message and get send message merge previous message
@@ -107,6 +120,12 @@ const Messenger = () => {
         text: newMessage ? newMessage : "❤️",
         image: "",
       },
+    });
+
+    socket.current.emit("typingMessage", {
+      senderEmail: user.email,
+      reseverEmail: currentFriend.email,
+      msg: "",
     });
 
     messageSend(data).then((mess) => setMessage((prev) => [...prev, mess]));
@@ -145,6 +164,17 @@ const Messenger = () => {
               image: imageUrl,
             },
           };
+
+          socket.current.emit("sendMessage", {
+            senderName: user?.displayName,
+            senderEmail: user.email,
+            reseverEmail: currentFriend.email,
+            time: new Date(),
+            message: {
+              text: "",
+              image: imageUrl,
+            },
+          });
 
           ImageMessageSend(datas).then((mess) =>
             setMessage((prev) => [...prev, mess])
@@ -271,6 +301,7 @@ const Messenger = () => {
             scrollRef={scrollRef}
             emojiSend={emojiSend}
             imageSend={imageSend}
+            typingMessage={typingMessage}
           />
         ) : (
           "Please selecet your friend"
