@@ -13,7 +13,12 @@ const RightSide = ({
   scrollRef,
   emojiSend,
   imageSend,
+  activeUsers,
 }) => {
+  console.log(activeUsers);
+
+  console.log(currentFriend);
+
   return (
     <div className="col-9">
       <div className="right-side">
@@ -25,7 +30,15 @@ const RightSide = ({
                 <div className="image-name">
                   <div className="image">
                     <img src={currentFriend?.image} alt="" />
-                    <div className="active-icon"></div>
+                    {activeUsers &&
+                    activeUsers.length > 0 &&
+                    activeUsers.some(
+                      (u) => u.userEmail === currentFriend?.email
+                    ) ? (
+                      <div className="active-icon"></div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="name">
                     <h3>{currentFriend?.name}</h3>
@@ -65,7 +78,10 @@ const RightSide = ({
           </div>
 
           <div className="col-4">
-            <FriendInfo currentFriend={currentFriend} />
+            <FriendInfo
+              currentFriend={currentFriend}
+              activeUsers={activeUsers}
+            />
           </div>
         </div>
       </div>

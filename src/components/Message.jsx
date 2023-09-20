@@ -4,7 +4,7 @@ import { AuthContext } from "../provider/AuthPorvider";
 const Message = ({ message, currentFriend, scrollRef }) => {
   const { user } = useContext(AuthContext);
 
-  console.log(message.map((m) => console.log(m)));
+  // console.log(message.map((m) => console.log(m)));
 
   return (
     <div className="message-show">

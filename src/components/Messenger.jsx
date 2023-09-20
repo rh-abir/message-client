@@ -1,7 +1,8 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
+import { io } from "socket.io-client";
 import { getFriends } from "../api/auth";
 import {
   ImageMessageSend,
@@ -14,17 +15,52 @@ import Friends from "./Friends";
 import RightSide from "./RightSide";
 
 const Messenger = () => {
-  const scrollRef = useRef();
-
   const { user, message, setMessage } = useContext(AuthContext);
+
+  const myInfo = useMemo(() => {
+    return {
+      name: user?.displayName,
+      email: user?.email,
+      image: user?.photoURL,
+    };
+  }, [user]);
+
+  // console.log(user);
+  // FIZfShnoSNJDSCxUkWza2ctf3m2
 
   const [friends, setFriends] = useState([]);
 
   const [currentFriend, setCurrentFriend] = useState("");
+  // console.log(currentFriend);
 
   const [newMessage, setNewMessage] = useState("");
 
-  // const [] = useState([]);
+  const [activeUsers, setActiveUser] = useState([]);
+
+  const scrollRef = useRef();
+
+  const socket = useRef();
+
+  // console.log(user);
+
+  //  sokcit server connection
+  useEffect(() => {
+    socket.current = io("ws://localhost:8000");
+  }, []);
+
+  //send user infon in socket
+  useEffect(() => {
+    socket.current.emit("addUser", user?.email, myInfo);
+  }, [user, myInfo]);
+
+  // get all user connection in socket
+  useEffect(() => {
+    socket.current.on("getUser", (users) => {
+      const filterUser = users.filter((u) => u.userEmail !== user?.email);
+      // console.log(filterUser);
+      setActiveUser(filterUser);
+    });
+  }, [user]);
 
   const inputHandle = (e) => {
     setNewMessage(e.target.value);
@@ -123,7 +159,7 @@ const Messenger = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
 
-  console.log(message);
+  // console.log(message);
 
   return (
     <div className="messenger">
@@ -164,7 +200,15 @@ const Messenger = () => {
             </div>
 
             <div className="active-friends">
-              <ActiveFriend />
+              {activeUsers && activeUsers.length > 0
+                ? activeUsers.map((u, i) => (
+                    <ActiveFriend
+                      key={i}
+                      user={u}
+                      setCurrentFriend={setCurrentFriend}
+                    />
+                  ))
+                : ""}
             </div>
 
             <div className="friends">
@@ -188,6 +232,7 @@ const Messenger = () => {
         </div>
         {currentFriend ? (
           <RightSide
+            activeUsers={activeUsers}
             currentFriend={currentFriend}
             inputHandle={inputHandle}
             newMessage={newMessage}

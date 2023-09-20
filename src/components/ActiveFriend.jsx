@@ -1,49 +1,20 @@
-const ActiveFriend = () => {
+const ActiveFriend = ({ user, setCurrentFriend }) => {
+  console.log(user.userInfo);
+
   return (
-    <div className="active-friend">
+    <div
+      onClick={() =>
+        setCurrentFriend({
+          email: user.userInfo?.email,
+          name: user.userInfo.name,
+          image: user.userInfo.image,
+        })
+      }
+      className="active-friend"
+    >
       <div className="image-active-icon">
         <div className="image">
-          <img src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg" alt="" />
-          <div className="active-icon"></div>
-        </div>
-        <div className="image">
-          <img src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg" alt="" />
-          <div className="active-icon"></div>
-        </div>
-        <div className="image">
-          <img src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg" alt="" />
-          <div className="active-icon"></div>
-        </div>
-        <div className="image">
-          <img src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg" alt="" />
-          <div className="active-icon"></div>
-        </div>
-        <div className="image">
-          <img src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg" alt="" />
-          <div className="active-icon"></div>
-        </div>
-        <div className="image">
-          <img src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg" alt="" />
-          <div className="active-icon"></div>
-        </div>
-        <div className="image">
-          <img src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg" alt="" />
-          <div className="active-icon"></div>
-        </div>
-        <div className="image">
-          <img src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg" alt="" />
-          <div className="active-icon"></div>
-        </div>
-        <div className="image">
-          <img src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg" alt="" />
-          <div className="active-icon"></div>
-        </div>
-        <div className="image">
-          <img src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg" alt="" />
-          <div className="active-icon"></div>
-        </div>
-        <div className="image">
-          <img src="https://i.ibb.co/ZHYXD3r/10782719-19197274.jpg" alt="" />
+          <img src={user?.userInfo?.image} alt="" />
           <div className="active-icon"></div>
         </div>
       </div>
