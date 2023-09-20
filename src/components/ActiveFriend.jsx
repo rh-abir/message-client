@@ -1,6 +1,4 @@
 const ActiveFriend = ({ user, setCurrentFriend }) => {
-  console.log(user.userInfo);
-
   return (
     <div
       onClick={() =>

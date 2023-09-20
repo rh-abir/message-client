@@ -15,10 +15,6 @@ const RightSide = ({
   imageSend,
   activeUsers,
 }) => {
-  console.log(activeUsers);
-
-  console.log(currentFriend);
-
   return (
     <div className="col-9">
       <div className="right-side">

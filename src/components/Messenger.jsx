@@ -25,13 +25,11 @@ const Messenger = () => {
     };
   }, [user]);
 
-  // console.log(user);
-  // FIZfShnoSNJDSCxUkWza2ctf3m2
-
   const [friends, setFriends] = useState([]);
 
   const [currentFriend, setCurrentFriend] = useState("");
-  // console.log(currentFriend);
+
+  const [socketMessage, setSocketMessage] = useState("");
 
   const [newMessage, setNewMessage] = useState("");
 
@@ -46,7 +44,13 @@ const Messenger = () => {
   //  sokcit server connection
   useEffect(() => {
     socket.current = io("ws://localhost:8000");
+    socket.current.on("getMessage", (data) => {
+      // console.log(data);
+      setSocketMessage(data);
+    });
   }, []);
+
+  // console.log(socketMessage);
 
   //send user infon in socket
   useEffect(() => {
@@ -62,6 +66,19 @@ const Messenger = () => {
     });
   }, [user]);
 
+  useEffect(() => {
+    if (socketMessage && currentFriend) {
+      if (
+        socketMessage.messageData.senderEmail === currentFriend.email &&
+        socketMessage.messageData.reseverEmail === user?.email
+      ) {
+        setMessage((pre) => [...pre, socketMessage]);
+        // console.log(socketMessage, message);
+      }
+    }
+    setSocketMessage("");
+  }, [socketMessage, currentFriend, user, setMessage]);
+
   const inputHandle = (e) => {
     setNewMessage(e.target.value);
   };
@@ -74,12 +91,23 @@ const Messenger = () => {
       senderName: user?.displayName,
       senderEmail: user.email,
       reseverEmail: currentFriend.email,
-
+      time: new Date(),
       message: {
         text: newMessage ? newMessage : "❤️",
         image: "",
       },
     };
+
+    socket.current.emit("sendMessage", {
+      senderName: user?.displayName,
+      senderEmail: user.email,
+      reseverEmail: currentFriend.email,
+      time: new Date(),
+      message: {
+        text: newMessage ? newMessage : "❤️",
+        image: "",
+      },
+    });
 
     messageSend(data).then((mess) => setMessage((prev) => [...prev, mess]));
   };
