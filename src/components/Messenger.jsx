@@ -15,6 +15,10 @@ import ActiveFriend from "./ActiveFriend";
 import Friends from "./Friends";
 import RightSide from "./RightSide";
 
+import useSound from "use-sound";
+import notificationSound from "../audio/notification.wav";
+import sendingSound from "../audio/send.wav";
+
 const Messenger = () => {
   const { user, message, setMessage } = useContext(AuthContext);
 
@@ -25,6 +29,9 @@ const Messenger = () => {
       image: user?.photoURL,
     };
   }, [user]);
+
+  const [notificationSoundPlay] = useSound(notificationSound);
+  const [sendingPlay] = useSound(sendingSound);
 
   const [friends, setFriends] = useState([]);
 
@@ -94,6 +101,7 @@ const Messenger = () => {
       socketMessage.messageData.senderEmail !== currentFriend.email &&
       socketMessage.messageData.reseverEmail === user?.email
     ) {
+      notificationSoundPlay();
       toast.success(
         `${socketMessage.messageData.senderName}  send a new message`
       );
@@ -113,7 +121,7 @@ const Messenger = () => {
   // send message and get send message merge previous message
   const sendMessage = (e) => {
     e.preventDefault();
-
+    sendingPlay();
     const data = {
       senderName: user?.displayName,
       senderEmail: user.email,
@@ -160,6 +168,7 @@ const Messenger = () => {
 
   const imageSend = (event) => {
     if (event.target.files.length !== 0) {
+      sendingPlay();
       const imageName = event.target?.files[0];
 
       const formData = new FormData();
