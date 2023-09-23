@@ -106,7 +106,7 @@ const Messenger = () => {
         `${socketMessage.messageData.senderName}  send a new message`
       );
     }
-  }, [socketMessage, currentFriend, user]);
+  }, [socketMessage, currentFriend, user, notificationSoundPlay]);
 
   const inputHandle = (e) => {
     setNewMessage(e.target.value);
