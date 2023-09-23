@@ -1,4 +1,5 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { BiSearch } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
@@ -73,6 +74,7 @@ const Messenger = () => {
     });
   }, [user]);
 
+  // get message spacific users
   useEffect(() => {
     if (socketMessage && currentFriend) {
       if (
@@ -85,6 +87,18 @@ const Messenger = () => {
     }
     setSocketMessage("");
   }, [socketMessage, currentFriend, user, setMessage]);
+
+  useEffect(() => {
+    if (
+      socketMessage &&
+      socketMessage.messageData.senderEmail !== currentFriend.email &&
+      socketMessage.messageData.reseverEmail === user?.email
+    ) {
+      toast.success(
+        `${socketMessage.messageData.senderName}  send a new message`
+      );
+    }
+  }, [socketMessage, currentFriend, user]);
 
   const inputHandle = (e) => {
     setNewMessage(e.target.value);
@@ -137,6 +151,11 @@ const Messenger = () => {
   const emojiSend = (emu) => {
     // console.log(emu);
     setNewMessage((pre) => `${pre}` + emu);
+    socket.current.emit("typingMessage", {
+      senderEmail: user.email,
+      reseverEmail: currentFriend.email,
+      msg: emu,
+    });
   };
 
   const imageSend = (event) => {
@@ -223,6 +242,15 @@ const Messenger = () => {
 
   return (
     <div className="messenger">
+      <Toaster
+        position={"top-right"}
+        reverseOrder={false}
+        toastOptions={{
+          style: {
+            fontSize: "18px",
+          },
+        }}
+      />
       <div className="row">
         <div className="col-3">
           <div className="left-side">
